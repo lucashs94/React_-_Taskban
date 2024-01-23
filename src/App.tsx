@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { DragDropContext, DropResult } from "@hello-pangea/dnd"
+import { DragDropContext, DropResult, Droppable } from "@hello-pangea/dnd"
 
 import { KanbanProps, TaskProps } from "./types"
 
@@ -73,38 +73,57 @@ function App() {
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return
 
-    const { source, destination } = result
-    const sourceColumn = data[source.droppableId]
-    const destinationColumn = data[destination.droppableId]
-
-    if(source.droppableId !== destination.droppableId){
-
-      const newSourceTasks = Array.from(sourceColumn.tasks)
-      const [removed] = newSourceTasks.splice(source.index, 1)
-  
-      const newDestinationTasks = Array.from(destinationColumn.tasks)
-      newDestinationTasks.splice(destination.index, 0, removed)
+    if(result.type === 'COLUMN') {
       
-      const newData = {
-        ...data,
-        [source.droppableId]: { ...sourceColumn, tasks: newSourceTasks },
-        [destination.droppableId]: { ...destinationColumn, tasks: newDestinationTasks },
-      }
-      
-      setData(newData)
+      const { source, destination } = result
+      const dataSource = Object.values(data)
 
-    }else{
+      const [removed] = dataSource.splice(source.index, 1)
+      dataSource.splice(destination.index, 0, removed)
 
-      const newSourceTasks = Array.from(sourceColumn.tasks)
-      const [removed] = newSourceTasks.splice(source.index, 1)
-      newSourceTasks.splice(destination.index, 0, removed)
-
-      const newData = {
-        ...data,
-        [source.droppableId]: { ...sourceColumn, tasks: newSourceTasks }
-      }
+      const newData = dataSource.reduce((acc,item) => {
+        acc[item.id] = item
+        return acc
+      }, {} as KanbanProps)
 
       setData(newData)
+    }
+
+    if(result.type === 'CARD'){
+
+      const { source, destination } = result
+      const sourceColumn = data[source.droppableId]
+      const destinationColumn = data[destination.droppableId]
+
+      if(source.droppableId !== destination.droppableId){
+
+        const newSourceTasks = Array.from(sourceColumn.tasks)
+        const [removed] = newSourceTasks.splice(source.index, 1)
+    
+        const newDestinationTasks = Array.from(destinationColumn.tasks)
+        newDestinationTasks.splice(destination.index, 0, removed)
+        
+        const newData = {
+          ...data,
+          [source.droppableId]: { ...sourceColumn, tasks: newSourceTasks },
+          [destination.droppableId]: { ...destinationColumn, tasks: newDestinationTasks },
+        }
+        
+        setData(newData)
+
+      }else{
+
+        const newSourceTasks = Array.from(sourceColumn.tasks)
+        const [removed] = newSourceTasks.splice(source.index, 1)
+        newSourceTasks.splice(destination.index, 0, removed)
+
+        const newData = {
+          ...data,
+          [source.droppableId]: { ...sourceColumn, tasks: newSourceTasks }
+        }
+
+        setData(newData)
+      }
     }
   }
 
@@ -117,21 +136,34 @@ function App() {
       <main className='flex flex-1 flex-col bg-primary-gray'>
 
         <Header openModal={handleOpenModal}/>
-
-        <section className="flex px-[80px] pt-[60px] gap-8">
-          <DragDropContext 
-            onDragEnd={onDragEnd}
+        
+        <DragDropContext 
+          onDragEnd={onDragEnd}
+        >
+          <Droppable
+            droppableId="board"
+            type="COLUMN"
+            direction="horizontal"
           >
-            {Object.values(data).map((column) => (
-              <div key={column.id}>
+            {(provided) => (
+              <section
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                className="flex px-[80px] pt-[60px] gap-8"
+              >
+                {Object.values(data).map((column, index) => (
+                  <div key={column.id}>
 
-                <Column column={column}/>
+                    <Column column={column} index={index}/>
 
-              </div>
-            ))}
-          </DragDropContext>
-        </section>
+                  </div>
+                ))}
 
+                {provided.placeholder}
+              </section>
+            )}
+          </Droppable>
+        </DragDropContext>
       </main>
 
       <Modal isOpen={modalIsOpen} onClose={handleCloseModal} onSend={handleSubmit}/>

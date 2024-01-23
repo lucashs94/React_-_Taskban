@@ -7,7 +7,7 @@ import Box from "../Box"
 type Props = {
   task: TaskProps
   index: number
-  onOpenModal: () => void
+  // onOpenModal: () => void
 }
 
 
