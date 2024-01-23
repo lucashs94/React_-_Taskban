@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { DragDropContext, DropResult, Droppable } from "@hello-pangea/dnd"
+import { PlusCircle } from "lucide-react"
 
 import { KanbanProps, TaskProps } from "./types"
 
@@ -151,11 +152,18 @@ function App() {
                 {...provided.droppableProps}
                 className="flex px-[30px] pt-[30px]"
               >
-                  {Object.values(data).map((column, index) => (
-                    <div key={column.id}>
-                      <Column column={column} index={index}/>
-                    </div>
-                  ))}
+                {Object.values(data).map((column, index) => (
+                  <div key={column.id}>
+                    <Column column={column} index={index}/>
+                  </div>
+                ))}
+
+                <div className="flex items-center w-[250px] h-[50px] py-[29px] px-[12px] m-4 gap-2 bg-card-gray rounded-xxl shadow-3xl">
+                  <PlusCircle color="gray"/>
+                  <h2 className="text-dark-gray font-bold">
+                    New Column
+                  </h2>
+                </div>
 
                 {provided.placeholder}
               </section>

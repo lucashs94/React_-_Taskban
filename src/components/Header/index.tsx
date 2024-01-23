@@ -1,3 +1,4 @@
+import { Plus } from "lucide-react"
 
 
 type HeaderProps = {
@@ -6,14 +7,15 @@ type HeaderProps = {
 
 export default function Header({ openModal }:HeaderProps){
   return(
-    <header className="flex w-full h-[90px] bg-primary-purple px-[90px] items-center justify-end">
+    <header className="flex w-full h-[70px] bg-primary-purple px-[50px] items-center justify-end">
       <button 
         onClick={openModal}
-        className="p-3 bg-secondary-purple rounded-md font-primary_body font-medium text-lg
+        className="flex items-center gap-1 py-2 px-3 bg-secondary-purple rounded-md font-primary_body font-medium text-md
         hover:bg-purple-500 hover:transition hover:ease-linear hover:duration-[200ms] hover:ring hover:ring-secondary-purple
         "
       >
-        + Novo Card
+        <Plus/>
+        Novo Card
       </button>
     </header>
   )
