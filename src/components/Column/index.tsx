@@ -19,7 +19,7 @@ export default function Column({ column, index }: IColumnProps){
           ref={provided.innerRef}
           {...provided.dragHandleProps}
           {...provided.draggableProps}
-          className={`flex flex-col w-[300px] min-h-[50px] bg-card-gray rounded-xxl shadow-3xl py-[19px] px-[12px]`}
+          className={`flex flex-col w-[300px] min-h-[50px] py-[19px] px-[12px] m-4 bg-card-gray rounded-xxl shadow-3xl`}
         >
           <h2 className="text-dark-gray font-bold">
             {column.title}

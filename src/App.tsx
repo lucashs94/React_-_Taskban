@@ -149,15 +149,13 @@ function App() {
               <section
                 ref={provided.innerRef}
                 {...provided.droppableProps}
-                className="flex px-[80px] pt-[60px] gap-8"
+                className="flex px-[30px] pt-[30px]"
               >
-                {Object.values(data).map((column, index) => (
-                  <div key={column.id}>
-
-                    <Column column={column} index={index}/>
-
-                  </div>
-                ))}
+                  {Object.values(data).map((column, index) => (
+                    <div key={column.id}>
+                      <Column column={column} index={index}/>
+                    </div>
+                  ))}
 
                 {provided.placeholder}
               </section>
