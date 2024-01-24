@@ -15,14 +15,14 @@ const initialData: KanbanProps = {
     {
       id: '1', 
       title:'Tarefa 1', 
-      desc: 'Mg iashaus hauihs uiahs uaihs uiahsuiahsuiahsiahsiuahsu ahsiuahsiuahisuahsiuahsuih',
+      desc: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Beatae ducimus voluptate magnam laborum',
       date: '12/01/2024',
       priority: 'HIGH'
     },
     {
       id: '2', 
       title:'Tarefa 2', 
-      desc: 'Mg iashaus hauihs uiahs uaihs uiahsuiahsuiahsiahsiuahsu ahsiuahsiuahisuahsiuahsuih',
+      desc: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit.',
       date: '13/01/2024',
       priority: 'MEDIUM'
     },
@@ -31,7 +31,7 @@ const initialData: KanbanProps = {
     {
       id: '3', 
       title:'Tarefa 3', 
-      desc: 'Mg iashaus hauihs uiahs uaihs uiahsuiahsuiahsiahsiuahsu ahsiuahsiuahisuahsiuahsuih',
+      desc: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Beatae ducimus voluptate magnam laborum',
       date: '13/01/2024',
       priority: 'LOW'
     },
@@ -134,7 +134,7 @@ function App() {
 
       <Nav/>
 
-      <main className='flex flex-1 flex-col bg-primary-gray'>
+      <main className='flex flex-1 flex-col bg-primary-gray  overflow-x-auto'>
 
         <Header openModal={handleOpenModal}/>
         
@@ -150,7 +150,7 @@ function App() {
               <section
                 ref={provided.innerRef}
                 {...provided.droppableProps}
-                className="flex px-[30px] pt-[30px]"
+                className="flex flex-1 px-[30px] pt-[30px] overflow-x-auto"
               >
                 {Object.values(data).map((column, index) => (
                   <div key={column.id}>
@@ -158,7 +158,7 @@ function App() {
                   </div>
                 ))}
 
-                <div className="flex items-center w-[250px] h-[50px] py-[29px] px-[12px] m-4 gap-2 bg-card-gray rounded-xxl shadow-3xl">
+                <div className="flex items-center min-w-[300px] h-[50px] py-[29px] px-[12px] m-4 gap-2 bg-card-gray rounded-xxl shadow-3xl">
                   <PlusCircle color="gray"/>
                   <h2 className="text-dark-gray font-bold">
                     New Column
