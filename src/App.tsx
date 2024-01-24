@@ -40,7 +40,7 @@ const initialData: KanbanProps = {
 }
 
 
-function App() {
+export default function App() {
 
   const [data, setData] = useState<KanbanProps>(initialData)
   const [modalIsOpen, setModalIsOpen] = useState(false)
@@ -177,5 +177,3 @@ function App() {
     </div>
   )
 }
-
-export default App
