@@ -1,6 +1,9 @@
+import { useState } from "react"
 import { Draggable } from "@hello-pangea/dnd"
+import { Clock, Trash } from "lucide-react"
+
 import { TaskProps } from "../../types"
-import { Clock } from "lucide-react"
+
 import Box from "../Box"
 
 
@@ -12,6 +15,10 @@ type Props = {
 
 
 export default function Card({ task, index }: Props){
+
+  const [isHovered, setIsHovered] = useState(false)
+
+
   return(
     <Draggable key={task.id} draggableId={task.id} index={index}>
       {(provided) => (
@@ -20,7 +27,15 @@ export default function Card({ task, index }: Props){
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           className="flex flex-col justify-between w-full h-[150px] bg-white mt-4 rounded-xxl p-4"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
         >
+
+          {isHovered && (
+            <button className="flex items-center justify-center">
+              <Trash />
+            </button>
+          )}
 
           <h2 className="text-dark-gray font-bold text-[18px] line-clamp-1">
             {task.title}

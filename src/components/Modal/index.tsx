@@ -13,6 +13,7 @@ type ModalProps = {
   onSend: (task: TaskProps) => void
 }
 
+
 export default function Modal({ isOpen, onClose, onSend }: ModalProps){
 
   const taskRef = useRef<HTMLInputElement>(null)
@@ -28,7 +29,12 @@ export default function Modal({ isOpen, onClose, onSend }: ModalProps){
 
   function handleSend(){
 
-    if(taskRef.current !== null && descRef.current !== null && dateRef.current !== null){
+    if(
+      taskRef.current !== null && 
+      descRef.current !== null && 
+      dateRef.current !== null
+    )
+    {
 
       const data = {
         id: createId(),

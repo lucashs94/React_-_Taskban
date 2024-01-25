@@ -15,6 +15,8 @@ export type ColunmProps = {
   tasks: TaskProps[]
 }
 
-export type KanbanProps = {
-  [key: string]: ColunmProps
-}
+// export type KanbanProps = {
+//   [key: string]: ColunmProps
+// }
+
+export type KanbanProps = ColunmProps[]
