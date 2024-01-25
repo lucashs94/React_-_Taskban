@@ -1,3 +1,4 @@
+import { initialData } from "../initialData"
 import { KanbanProps, TaskProps } from "../types"
 
 const LOCAL_KEY = "@taskban:items"
@@ -29,25 +30,14 @@ export const saveNewCard = (task: TaskProps) => {
   const savedData = getAllLocalData()
 
   if(savedData){
-    const newData = savedData.filter( col => {
-      col.id === 'todo' && col.tasks.push(task)
-    })
-
-    console.log(newData)
-
-    try {
-      localStorage.setItem(LOCAL_KEY, JSON.stringify(newData))
-      return newData
-      
-    } catch (error) {
-      console.log(error)
-      return null
+    const col = savedData.find( col => col.id === 'todo' )
+    
+    if(col){
+      col.tasks.push(task)
+      setAllLocalData(savedData)
+      return savedData
     }
-
-  }else{
-    return null
   }
-  
 }
 
 
@@ -76,21 +66,21 @@ export const removeCard = (taskId: string) => {
 }
 
 
-// export const initialFill = () => {
-//   const itemsSaved = getItems()
+export const initialFill = () => {
+  const itemsSaved = getAllLocalData()
 
-//   if(!itemsSaved){
-//     try {
-//       localStorage.setItem(LOCAL_KEY, JSON.stringify(initialData))
+  if(!itemsSaved){
+    try {
+      localStorage.setItem(LOCAL_KEY, JSON.stringify(initialData))
       
-//     } catch (error) {
-//       console.log(error)
+    } catch (error) {
+      console.log(error)
       
-//     }finally{
+    }finally{
 
-//       return
-//     }
-//   }
+      return
+    }
+  }
 
-//   return
-// }
+  return
+}

@@ -2,13 +2,12 @@ import { useEffect, useState } from "react"
 import { DragDropContext, DropResult, Droppable } from "@hello-pangea/dnd"
 
 import { KanbanProps, TaskProps } from "./types"
-import { getAllLocalData, saveNewCard, setAllLocalData } from "./services/localStorage"
+import { getAllLocalData, initialFill, saveNewCard, setAllLocalData } from "./services/localStorage"
 
 import Nav from "./components/Nav"
 import Header from "./components/Header"
 import Modal from "./components/Modal"
 import Column from "./components/Column"
-
 
 
 export default function App() {
@@ -48,9 +47,8 @@ export default function App() {
       const [removed] = dataSource.splice(source.index, 1)
       dataSource.splice(destination.index, 0, removed)
 
-      const newData = dataSource
-      setAllLocalData(newData)
-      setData(newData)
+      setAllLocalData(dataSource)
+      setData(dataSource)
     }
 
     if(result.type === 'CARD'){
@@ -69,13 +67,8 @@ export default function App() {
         const newDestinationTasks = destinationColumn.tasks
         newDestinationTasks.splice(destination.index, 0, removed)
 
-        const newData = [
-          ...data,
-          { ...sourceColumn, tasks: newSourceTasks},
-          { ...destinationColumn, tasks: newDestinationTasks},
-        ]
-
-        setData(newData)
+        setAllLocalData(data)
+        setData(data)
 
       }else{
 
@@ -84,12 +77,8 @@ export default function App() {
 
         newSourceTasks.splice(destination.index, 0, removed)
 
-        const newData = [
-          ...data,
-          { ...sourceColumn, tasks: newSourceTasks }
-        ]
-
-        setData(newData)
+        setAllLocalData(data)
+        setData(data)
       }
     }
   }
@@ -97,6 +86,7 @@ export default function App() {
 
   useEffect(() => {
 
+    initialFill()
     const localData = getAllLocalData()
     localData && setData(localData)
 
@@ -120,7 +110,7 @@ export default function App() {
             type="COLUMN"
             direction="horizontal"
           >
-            {(provided) => (
+            {(provided) => (  
               <section
                 ref={provided.innerRef}
                 {...provided.droppableProps}
@@ -131,13 +121,6 @@ export default function App() {
                     <Column column={column} index={index}/>
                   </div>
                 ))}
-
-                {/* <div className="flex items-center min-w-[300px] h-[50px] py-[29px] px-[12px] m-4 gap-2 bg-card-gray rounded-xxl shadow-3xl">
-                  <PlusCircle color="gray"/>
-                  <h2 className="text-dark-gray font-bold">
-                    New Column
-                  </h2>
-                </div> */}
 
                 {provided.placeholder}
               </section>

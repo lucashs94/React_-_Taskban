@@ -21,14 +21,16 @@ export default function Column({ column, index }: IColumnProps){
     <Draggable draggableId={column.id} index={index}>
       {(provided) => (
         <section
-          onMouseEnter={ () => setIsHovered(true)}
-          onMouseLeave={ () => setIsHovered(false)}
           ref={provided.innerRef}
           {...provided.dragHandleProps}
           {...provided.draggableProps}
-          className={`flex flex-col w-[300px] min-h-[50px] py-[19px] px-[12px] m-4 bg-card-gray rounded-xxl shadow-3xl`}
+          className={`flex flex-col w-[300px] min-h-[50px] m-4 bg-card-gray rounded-xxl shadow-3xl`}
         >
-          <div className="flex justify-between">
+          <div 
+            onMouseEnter={ () => setIsHovered(true)}
+            onMouseLeave={ () => setIsHovered(false)}
+            className="flex items-center justify-between px-[12px] p-[19px]"
+          >
             <h2 className="text-dark-gray font-bold line-clamp-1">
               {column.title}
             </h2>
@@ -51,6 +53,7 @@ export default function Column({ column, index }: IColumnProps){
               <div
                 ref={provided.innerRef}
                 {...provided.droppableProps}
+                className=" px-[12px]"
               >
                 {column.tasks.map((task, index) => (
                   <Card key={task.id} index={index} task={task}/>

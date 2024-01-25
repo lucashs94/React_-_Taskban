@@ -26,20 +26,22 @@ export default function Card({ task, index }: Props){
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className="flex flex-col justify-between w-full h-[150px] bg-white mt-4 rounded-xxl p-4"
+          className="flex flex-col justify-between w-full h-[150px] bg-white mb-4 rounded-xxl p-4"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
 
-          {isHovered && (
-            <button className="flex items-center justify-center">
-              <Trash />
-            </button>
-          )}
+          <div className="flex items-center justify-between">
+            <h2 className="text-dark-gray font-bold text-[18px] line-clamp-1 pr-2">
+              {task.title}
+            </h2>
 
-          <h2 className="text-dark-gray font-bold text-[18px] line-clamp-1">
-            {task.title}
-          </h2>
+            {isHovered && (
+              <button className="flex text-red-600">
+                <Trash size={20}/>
+              </button>
+            )}
+          </div>
 
           <p className="w-full text-dark-gray text-[12px] line-clamp-2">
             {task.desc}
