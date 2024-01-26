@@ -15,6 +15,7 @@ type IColumnProps = {
 export default function Column({ column, index }: IColumnProps){
 
   const [isHovered, setIsHovered] = useState(false)
+  const [colIndex, _] = useState<number>(index)
 
 
   return(
@@ -56,7 +57,7 @@ export default function Column({ column, index }: IColumnProps){
                 className=" px-[12px]"
               >
                 {column.tasks.map((task, index) => (
-                  <Card key={task.id} index={index} task={task}/>
+                  <Card key={task.id} index={index} task={task} colIndex={colIndex}/>
                 ))}
 
                 {provided.placeholder}  
