@@ -41,28 +41,21 @@ export const saveNewCard = (task: TaskProps) => {
 }
 
 
-export const removeCard = (taskId: string) => {
+export const removeCard = (taskId: string, colIndex: number) => {
 
-  const itemsSaved = getAllLocalData()
+  const savedData = getAllLocalData()
 
-  if(itemsSaved){
-    const filtered = itemsSaved.filter( col => {
-      col.tasks.map( task => task.id !== taskId)
-    })
-
-    try {
-      localStorage.setItem(LOCAL_KEY, JSON.stringify(filtered))
-      return filtered
-      
-    } catch (error) {
-      console.log(error)
-      return null
-    }
+  if(savedData){
+    const col = savedData[colIndex]
     
-  } else{
-    return null
-  }
+    if(col){
+      const index = col.tasks.findIndex( task => task.id === taskId)
 
+      col.tasks.splice(index, 1)
+      setAllLocalData(savedData)
+      return savedData
+    }
+  } 
 }
 
 
