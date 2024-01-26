@@ -3,6 +3,7 @@ import { Draggable } from "@hello-pangea/dnd"
 import { Clock, Trash } from "lucide-react"
 
 import { TaskProps } from "../../types"
+import { removeCard } from "../../services/localStorage"
 
 import Box from "../Box"
 
@@ -10,13 +11,20 @@ import Box from "../Box"
 type Props = {
   task: TaskProps
   index: number
-  // onOpenModal: () => void
+  colIndex: number
 }
 
 
-export default function Card({ task, index }: Props){
+export default function Card({ task, index, colIndex }: Props){
 
   const [isHovered, setIsHovered] = useState(false)
+
+  
+  function handleDeleteCard(taskId: string){
+    const newData = removeCard(taskId, colIndex)
+
+    newData && window.location.reload()
+  }
 
 
   return(
@@ -37,7 +45,10 @@ export default function Card({ task, index }: Props){
             </h2>
 
             {isHovered && (
-              <button className="flex text-red-600">
+              <button 
+                onClick={ () => handleDeleteCard(task.id) }
+                className="flex text-red-600"
+              >
                 <Trash size={20}/>
               </button>
             )}
