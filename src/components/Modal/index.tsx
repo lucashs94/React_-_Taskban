@@ -4,6 +4,8 @@ import { createId } from '@paralleldrive/cuid2'
 import Box from "../Box"
 import Button from "../Button"
 import { PriorityProps, TaskProps } from "../../types"
+import { format, parse } from "date-fns"
+import { ptBR } from "date-fns/locale"
 
 
 type ModalProps = {
@@ -30,6 +32,12 @@ export default function Modal({ isOpen, onClose, onSend }: ModalProps){
   function handleSend(){
 
     if(
+      dateRef.current?.value.trim() === '' || 
+      taskRef.current?.value.trim() === '' || 
+      descRef.current?.value.trim() === ''
+    ) return
+
+    if(
       taskRef.current !== null && 
       descRef.current !== null && 
       dateRef.current !== null
@@ -40,7 +48,7 @@ export default function Modal({ isOpen, onClose, onSend }: ModalProps){
         id: createId(),
         title: taskRef.current.value,
         desc: descRef.current.value,
-        date: dateRef.current.value,
+        date: format(parse(dateRef.current.value, 'yyyy-MM-dd', new Date(), { locale: ptBR }), 'dd/MM/yyyy') || '',
         priority: boxSelection
       }
 
@@ -117,9 +125,9 @@ export default function Modal({ isOpen, onClose, onSend }: ModalProps){
                   <input 
                     ref={dateRef}
                     id="date" 
-                    type="text" 
+                    type="date" 
                     className="block px-2.5 pb-2.5 pt-4 w-full text-lg text-primary-purple bg-transparent rounded-lg border-2 border-secondary-purple appearance-none focus:outline-none focus:ring-0 focus:border-secondary-purple peer" 
-                    placeholder=" " 
+                    placeholder=""
                   />
                   <label htmlFor="date" className="absolute text-md text-light-gray duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-primary-purple peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">
                     Data Final
