@@ -1,38 +1,15 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom"
-import List from "../screens/List"
-import Timeline from "../screens/Timeline"
-import Calendar from "../screens/Calendar"
-import App from "../App"
+import Loading from "../components/Loading"
+import { useDataContext } from "../contexts/DataContext"
+import AppRoutes from "./app.routes"
 
 
-export default function AppRoutes(){
+export default function Routes(){
+
+  const { data } = useDataContext()
+
   return(
-    <BrowserRouter>
-
-      <Routes>
-
-        <Route 
-          path="/"
-          element={<App/>}
-        />
-
-        <Route 
-          path="/list"
-          element={<List/>}
-        />
-
-        <Route 
-          path="/timeline"
-          element={<Timeline/>}
-        />
-
-        <Route 
-          path="/calendar"
-          element={<Calendar/>}
-        />
-
-      </Routes>
-      
-    </BrowserRouter>
+    <>
+      {data.length > 0 ? <AppRoutes/> : <Loading />}
+    </>
   )
 }
