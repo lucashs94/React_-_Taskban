@@ -6,6 +6,8 @@ import { TaskProps } from "../../types"
 import { removeCard } from "../../services/localStorage"
 
 import Box from "../Box"
+import { isBefore, isToday, parse } from "date-fns"
+import { ptBR } from "date-fns/locale"
 
 
 type Props = {
@@ -19,7 +21,11 @@ export default function Card({ task, index, colIndex }: Props){
 
   const [isHovered, setIsHovered] = useState(false)
 
-  
+  const parsedDate = parse(task.date, 'dd/MM/yyyy', new Date(), { locale: ptBR })
+  const IsToday = isToday(parsedDate)
+  const IsBefore = isBefore(parsedDate, new Date())
+  const delayed = IsBefore || IsToday
+
   function handleDeleteCard(taskId: string){
     const newData = removeCard(taskId, colIndex)
 
@@ -60,9 +66,11 @@ export default function Card({ task, index, colIndex }: Props){
 
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
-              <Clock color="red"/>
+              <Clock className={`${delayed ? 'text-red-500' : 'text-black'}`}/>
 
-              <span className="text-red-500 text-[14px]">
+              <span 
+                className={`${delayed ? 'text-red-500' : 'text-black' } text-[14px]`}
+              >
                 {task.date}
               </span>
             </div>
