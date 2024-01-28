@@ -1,18 +1,21 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { DragDropContext, DropResult, Droppable } from "@hello-pangea/dnd"
 
 import { KanbanProps, TaskProps } from "./types"
-import { getAllLocalData, initialFill, saveNewCard, setAllLocalData } from "./services/localStorage"
+import { saveNewCard, setAllLocalData } from "./services/localStorage"
 
 import Nav from "./components/Nav"
 import Header from "./components/Header"
 import Modal from "./components/Modal"
 import Column from "./components/Column"
+import { useDataContext } from "./contexts/DataContext"
 
 
 export default function App() {
 
-  const [data, setData] = useState<KanbanProps>([])
+  const { data: contextData } = useDataContext()
+
+  const [data, setData] = useState<KanbanProps>(contextData)
   const [modalIsOpen, setModalIsOpen] = useState(false)
 
 
@@ -82,15 +85,6 @@ export default function App() {
       }
     }
   }
-
-
-  useEffect(() => {
-
-    initialFill()
-    const localData = getAllLocalData()
-    localData && setData(localData)
-
-  }, [])
 
 
   return (
