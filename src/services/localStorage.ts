@@ -20,7 +20,6 @@ export const setAllLocalData = (data: KanbanProps) => {
     
   } catch (err) {
     console.log(err)
-    
   }
 }
 

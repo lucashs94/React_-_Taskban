@@ -1,13 +1,13 @@
 import { useState } from "react"
 import { Draggable } from "@hello-pangea/dnd"
 import { Clock, Trash } from "lucide-react"
-
-import { TaskProps } from "../../types"
-import { removeCard } from "../../services/localStorage"
-
-import Box from "../Box"
 import { isBefore, isToday, parse } from "date-fns"
 import { ptBR } from "date-fns/locale"
+
+import { TaskProps } from "../../types"
+import { useDataContext } from "../../contexts/DataContext"
+
+import Box from "../Box"
 
 
 type Props = {
@@ -19,6 +19,8 @@ type Props = {
 
 export default function Card({ task, index, colIndex }: Props){
 
+  const { deleteCard } = useDataContext()
+
   const [isHovered, setIsHovered] = useState(false)
 
   const parsedDate = parse(task.date, 'dd/MM/yyyy', new Date(), { locale: ptBR })
@@ -26,10 +28,9 @@ export default function Card({ task, index, colIndex }: Props){
   const IsBefore = isBefore(parsedDate, new Date())
   const delayed = IsBefore || IsToday
 
-  function handleDeleteCard(taskId: string){
-    const newData = removeCard(taskId, colIndex)
-
-    newData && window.location.reload()
+  
+  function handleDeleteCard(){
+    deleteCard(task.id, colIndex)
   }
 
 
@@ -52,7 +53,7 @@ export default function Card({ task, index, colIndex }: Props){
 
             {isHovered && (
               <button 
-                onClick={ () => handleDeleteCard(task.id) }
+                onClick={ () => handleDeleteCard() }
                 className="flex text-red-600"
               >
                 <Trash size={20}/>

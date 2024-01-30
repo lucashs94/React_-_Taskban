@@ -1,21 +1,21 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { DragDropContext, DropResult, Droppable } from "@hello-pangea/dnd"
 
 import { KanbanProps, TaskProps } from "./types"
-import { saveNewCard, setAllLocalData } from "./services/localStorage"
+import { useDataContext } from "./contexts/DataContext"
+import { setAllLocalData } from "./services/localStorage"
 
 import Nav from "./components/Nav"
 import Header from "./components/Header"
 import Modal from "./components/Modal"
 import Column from "./components/Column"
-import { useDataContext } from "./contexts/DataContext"
 
 
 export default function App() {
 
-  const { data: contextData } = useDataContext()
+  const { data: contextData, createCard, saveData } = useDataContext()
 
-  const [data, setData] = useState<KanbanProps>(contextData)
+  const [data, setData] = useState<KanbanProps>([])
   const [modalIsOpen, setModalIsOpen] = useState(false)
 
 
@@ -30,12 +30,7 @@ export default function App() {
 
 
   const handleNewCard = (newTask: TaskProps) => {
-    
-    const newData = saveNewCard(newTask)
-
-    if(newData){
-      setData(newData)
-    }
+    createCard(newTask)
   }
 
 
@@ -50,8 +45,7 @@ export default function App() {
       const [removed] = dataSource.splice(source.index, 1)
       dataSource.splice(destination.index, 0, removed)
 
-      setAllLocalData(dataSource)
-      setData(dataSource)
+      saveData(dataSource)
     }
 
     if(result.type === 'CARD'){
@@ -85,6 +79,13 @@ export default function App() {
       }
     }
   }
+
+
+  useEffect(() => {
+
+    setData(contextData)
+
+  }, [contextData])
 
 
   return (
